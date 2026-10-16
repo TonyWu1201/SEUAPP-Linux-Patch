@@ -1,0 +1,18 @@
+# 大体积构建产物（可用 rebuild.sh / pack_*.sh 重建，不入库）
+*.deb
+*.rpm
+*.pkg.tar.zst
+*.pkg.tar.xz
+
+# 无 root 打包工具链（setup_build_tools.sh 生成）
+.buildtools/
+
+# Python 缓存
+__pycache__/
+*.pyc
+
+# 编辑器 / 系统杂物
+*.swp
+*.swo
+*~
+.DS_Store

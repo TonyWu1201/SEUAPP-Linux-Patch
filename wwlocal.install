@@ -1,0 +1,40 @@
+# 企业微信 (wwlocal) 安装脚本 —— 供 pack_arch.sh 生成 .INSTALL 及 PKGBUILD 使用
+# 与 deb 版 postinst 行为一致：刷新桌面数据库/图标缓存，并向当前用户的桌面目录放置快捷方式。
+
+post_install() {
+    _ww_refresh
+    _ww_desktop_shortcut
+}
+
+post_upgrade() {
+    _ww_refresh
+    _ww_desktop_shortcut
+}
+
+post_remove() {
+    _ww_refresh
+}
+
+_ww_refresh() {
+    if command -v update-desktop-database >/dev/null 2>&1; then
+        update-desktop-database -q /usr/share/applications || true
+    fi
+    if command -v gtk-update-icon-cache >/dev/null 2>&1; then
+        gtk-update-icon-cache -q -t -f /usr/share/icons/hicolor || true
+    fi
+    return 0
+}
+
+_ww_desktop_shortcut() {
+    [ -n "${SUDO_USER:-}" ] || return 0
+    [ "$SUDO_USER" != root ] || return 0
+    _ww_home="$(getent passwd "$SUDO_USER" 2>/dev/null | cut -d: -f6)"
+    [ -n "$_ww_home" ] || return 0
+    for _ww_d in "$_ww_home/Desktop" "$_ww_home/桌面"; do
+        if [ -d "$_ww_d" ]; then
+            cp -f /usr/share/applications/wwlocal.desktop "$_ww_d/" 2>/dev/null || true
+            chown "$SUDO_USER" "$_ww_d/wwlocal.desktop" 2>/dev/null || true
+        fi
+    done
+    return 0
+}
