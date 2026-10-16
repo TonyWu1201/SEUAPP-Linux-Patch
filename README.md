@@ -1,4 +1,4 @@
-# 企业微信 (weworklocal) Linux 兼容补丁 —— 下载 / 打补丁 / 安装
+# 数智东南 (企业微信 weworklocal) Linux 补丁
 
 东南大学应用门户（app.seu.edu.cn）发布的 Linux 版企业微信（`weworklocal`，
 2022 年构建，Electron 8.5.5 / Chrome 80）在新版发行版上无法正常运行：
